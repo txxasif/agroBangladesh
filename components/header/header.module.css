@@ -1,0 +1,32 @@
+.header{
+    display: flex;
+    font-size: 1.6rem;
+    height: 7rem;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    background-color: #165664;
+    align-items: center;
+    
+}
+.header a{
+    text-decoration: none;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.99);
+
+}
+.header a:hover{
+    color: antiquewhite;
+}
+.info{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    font-size: 1.4rem;
+    line-height: 4.9rem;
+    font-weight: 400;
+    
+}
+.logo{
+    align-items: center;
+}
