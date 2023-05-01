@@ -1,7 +1,9 @@
 import { useState } from "react";
-//import styles from './signup.module.css';
-import axios from "axios";
-
+import { uploadPhoto} from "@/helper/registration/registration.helper";
+import { useDispatch, useSelector } from "react-redux";
+import { createUserAsync } from "@/store/reducers/user.reducer";
+import { currentUserSelector,currentUserErrorSelector,currentUserErrorTextSelector } from "@/store/reducers/user.selector";
+import { useRouter } from "next/router";
 const defaultValue = {
   name: "",
   email: "",
@@ -10,11 +12,16 @@ const defaultValue = {
 };
 
 export default function SignUp() {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [form, setForm] = useState(defaultValue);
   const [photo,setPhoto] = useState(null);
+  const currentUser = useSelector(currentUserSelector);
+  const isError = useSelector(currentUserErrorSelector);
+  const errorMessage = useSelector(currentUserErrorTextSelector);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value} = e.target;
     setForm({ ...form, [name]: value });
   };
 
@@ -27,14 +34,17 @@ export default function SignUp() {
     e.preventDefault();
 
     const formData = new FormData();
-    console.log(photo);
     formData.append("file", photo);
     formData.append("upload_preset", "agrobd");
-    const result = await axios.post('https://api.cloudinary.com/v1_1/dupffxzyk/image/upload',formData);
+    const result = await uploadPhoto(formData);
     if(result.statusText === "OK"){
        setForm({...form,["photo"]: result.data.secure_url});
-       const response = await axios.post('/api/registration',form);
-       console.log(response);
+       dispatch(createUserAsync(form)).then(()=>{
+        if(currentUser){
+          router.push('/')
+        }
+       })
+      
     }else{
       alert("Something went wrong")
     }
@@ -66,12 +76,14 @@ export default function SignUp() {
           name="password"
           value={form.password}
           onChange={handleChange}
+          autoComplete={form.password}
           required
         />
         <label>Photo</label>
         <input type="file" name="photo" onChange={handleImageChange} required />
         <button type="submit">Sign Up</button>
       </form>
+      <h3>{isError ? errorMessage : null}</h3>
     </div>
   );
 }

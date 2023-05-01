@@ -7,13 +7,13 @@
     padding: 1rem 1rem;
     background-color: #165664;
     align-items: center;
+    color: rgba(255, 255, 255, 0.99);
     
 }
 .header a{
     text-decoration: none;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.99);
-
 }
 .header a:hover{
     color: antiquewhite;
@@ -29,4 +29,7 @@
 }
 .logo{
     align-items: center;
+}
+.signOut:hover{
+    cursor: pointer;
 }
