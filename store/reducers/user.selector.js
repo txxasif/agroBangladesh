@@ -5,4 +5,3 @@ export const currentUserSelector = createSelector([user],(user)=>user.currentUse
 export const currentUserErrorSelector = createSelector([user],(user)=>user.error);
 export const currentUserErrorTextSelector = createSelector([user],(user)=>user.errorText);
 export const currentUserIdSelector = createSelector([currentUserDataSelector],(user)=>user._id);
-export const isPostCreatedSelector = createSelector([user],(user)=>user.createPostStatus);

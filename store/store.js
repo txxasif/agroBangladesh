@@ -3,8 +3,10 @@ import userReducer from "./reducers/user.reducer";
 import thunkMiddleware from 'redux-thunk'
 import { persistReducer, persistStore } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
+import postReducer from "./reducers/post.reducer";
 const rootReducer = combineReducers({
-    user : userReducer
+    user : userReducer,
+    post: postReducer
 });
 const persistConfig = {
   key: 'root',

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Post from "./post.schema";
 import User from "./user.schema";
 export async function createPostModel(postData){
@@ -25,3 +26,22 @@ export async function getUserPostsModel(id){
       return {status: false};
     }
 }
+export async function deletePost(userId, postId){
+    const ObjectId =   mongoose.Types.ObjectId;
+    try{
+        const user = await User.updateOne(
+            {_id: userId},
+            {
+                $pull: {
+                    posts: {
+                        _id: postId
+                    }
+                }
+            }
+        )
+        log(user);
+    }catch(err){
+        console.log("sorry");
+    }
+}
+    

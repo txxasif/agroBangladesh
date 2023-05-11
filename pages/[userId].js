@@ -1,6 +1,6 @@
 import Profile from "@/components/profile/profile";
-import { setPostChecker } from "@/store/reducers/user.reducer";
-import { isPostCreatedSelector } from "@/store/reducers/user.selector";
+import { setPostChecker } from "@/store/reducers/post.reducer";
+import { isPostCreatedSelector } from "@/store/reducers/post.selector";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -11,11 +11,10 @@ export default function ProfileIndex({userData}){
     const dispatch = useDispatch();
     useEffect(()=>{
       if(check){
-        console.log(router.asPath);
         router.replace(router.asPath);
         dispatch(setPostChecker());
       }
-    })
+    },[check])
     return(
         <div>
             <Profile user = {userData} />

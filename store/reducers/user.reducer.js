@@ -15,9 +15,6 @@ const initialState = {
   userData: userData,
   error: false,
   errorText: "",
-  createPostStatus: false,
-  postError: false,
-  postErrorMessage: "",
 };
 
 export const createUserAsync = createAsyncThunk(
@@ -72,28 +69,7 @@ export const loginUserAsync = createAsyncThunk(
     }
   }
 );
-export const createPostAsync = createAsyncThunk(
-  "user/createPost",
-  async (data, thunkAPI) => {
-    try {
-      const result = await uploadPhoto(data.photo);
-      console.log(result.data.secure_url, "reult");
-      data["photo"] = result.data.secure_url;
-      const response = await createPostHelper(data);
-      if (response.status === 201) {
-        return true;
-      } else {
-        throw new Error(response.statusText);
-      }
-    } catch (err) {
-      if (err.response && err.response.status === 404) {
-        return thunkAPI.rejectWithValue({
-          message: "Something went wrong",
-        });
-      }
-    }
-  }
-);
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -135,21 +111,8 @@ export const userSlice = createSlice({
         state.error = true;
         state.errorText = action.payload.message;
       })
-      .addCase(createPostAsync.fulfilled, (state, action) => {
-        state.createPostStatus = true;
-        state.postError = false;
-        state.postErrorMessage = "";
-      })
-      .addCase(createPostAsync.rejected, (state, action) => {
-        console.log(action.error);
-        state.postError = true;
-        state.postErrorMessage = action.payload.message;
-      })
-      .addCase(createPostAsync.pending, (state, action) => {
-        console.log("making a post...");
-      });
   },
 });
-export const { setCurrentUser,setPostChecker } = userSlice.actions;
+export const { setCurrentUser } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;

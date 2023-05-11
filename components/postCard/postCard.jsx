@@ -2,7 +2,11 @@ import React from 'react';
 import styles from './post.module.css'; // Import Next.js styles
 
 const PostCard = ({ seller, post }) => {
+  const deletePost = () => {
+     
+  }
   const { title, description, category, price, quantity, unit, photo, createdAt} = post;
+  const date = new Date(createdAt).toLocaleString();
   return (
     <div key = { post._id} className={styles.post}>
       <div className={styles.header}>
@@ -10,7 +14,7 @@ const PostCard = ({ seller, post }) => {
           <img src={seller.photo} alt={seller.name} className={styles.userPhoto} />
           <p className={styles.userName}>{seller.name}</p>
         </div>
-        <p className={styles.createdAt}>{createdAt}</p>
+        <p className={styles.createdAt}>{date}</p>
       </div>
       <div className={styles.details}>
         <img src={photo} alt={title} className={styles.postPhoto} />
@@ -21,6 +25,9 @@ const PostCard = ({ seller, post }) => {
           <p className={styles.price}>Price: {price} BDT</p>
           <p className={styles.quantity}>Quantity: {quantity} {unit}</p>
         </div>
+      </div>
+      <div>
+        <button onClick={deletePost}> Delete Post </button>
       </div>
     </div>
   );
