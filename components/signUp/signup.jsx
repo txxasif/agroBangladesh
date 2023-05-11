@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { uploadPhoto} from "@/helper/registration/registration.helper";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAsync } from "@/store/reducers/user.reducer";
@@ -8,7 +8,7 @@ const defaultValue = {
   name: "",
   email: "",
   password: "",
-  photo: ""
+  photo: null
 };
 
 export default function SignUp() {
@@ -21,8 +21,8 @@ export default function SignUp() {
   const errorMessage = useSelector(currentUserErrorTextSelector);
 
   const handleChange = (e) => {
-    const { name, value} = e.target;
-    setForm({ ...form, [name]: value });
+    const { name, value,files, type} = e.target;
+    setForm({ ...form, [name]: type == "file" ? files[0] : value });
   };
 
   const handleImageChange = (e) => {
@@ -32,24 +32,13 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("file", photo);
-    formData.append("upload_preset", "agrobd");
-    const result = await uploadPhoto(formData);
-    if(result.statusText === "OK"){
-       setForm({...form,["photo"]: result.data.secure_url});
-       dispatch(createUserAsync(form)).then(()=>{
-        if(currentUser){
-          router.push('/')
-        }
-       })
-      
-    }else{
-      alert("Something went wrong")
-    }
+    dispatch(createUserAsync(form))
   };
-
+  useEffect(()=>{
+    if(currentUser){
+      router.push('/');
+    }
+  },[])
   return (
     <div className="sign-up">
       <h2>Sign Up Now!</h2>
@@ -80,7 +69,7 @@ export default function SignUp() {
           required
         />
         <label>Photo</label>
-        <input type="file" name="photo" onChange={handleImageChange} required />
+        <input type="file" name="photo" onChange={handleChange} required />
         <button type="submit">Sign Up</button>
       </form>
       <h3>{isError ? errorMessage : null}</h3>

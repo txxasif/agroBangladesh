@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  
+  .profilePic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .name {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .bio {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+  }
+  

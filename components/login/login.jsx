@@ -1,7 +1,7 @@
 import { loginUserAsync } from '@/store/reducers/user.reducer';
-import { currentUserSelector,currentUserErrorSelector,currentUserErrorTextSelector } from '@/store/reducers/user.selector';
+import { currentUserSelector,currentUserErrorSelector,currentUserErrorTextSelector} from '@/store/reducers/user.selector';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const defaultValue = {
@@ -12,21 +12,24 @@ export default function LogIn(){
     const dispatch = useDispatch();
     const user = useSelector(currentUserSelector);
     const isError = useSelector(currentUserErrorSelector);
-    const isErrorMessage = useSelector(currentUserErrorMessageSelector);
+    const isErrorMessage = useSelector(currentUserErrorTextSelector);
     const [form,setForm] = useState(defaultValue);
     const router = useRouter();
     const handleChange = e => {
         const  {name,value} = e.target;
         setForm({...form,[name]:value});
 
-    }  
-    const handleSubmit = async e => {
-        e.preventDefault();
-        useDispatch(loginUserAsync(form)).then(()=>{
+    } 
+    useEffect(()=>{
             if(user){
+                console.log(router.pathname);
                 router.push('/');
             }
-        })
+       
+    },[user]); 
+    const handleSubmit = async e => {
+        e.preventDefault();
+        dispatch(loginUserAsync(form));
     }
     return( 
         <div className='sign-in'>

@@ -1,44 +1,63 @@
-const mongoose = require('mongoose');
-
+import mongoose from "mongoose";
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
-  image: {
+  category: {
     type: String,
-    required: true
+    enum: ['ধান','গম','শাকসবজি', 'ফল', 'মাছ','হাঁস-মুরগি', 'গরু-ছাগল' ,'মসলা','পাট', 'অন্যান্য',],
+    required: true,
   },
   price: {
     type: Number,
-    required: true
+    required: true,
   },
   quantity: {
     type: Number,
-    required: true
+    required: true,
   },
   unit: {
     type: String,
-    enum: ['kg', 'g', 'ton', 'piece'],
-    default: 'kg'
+    enum: ['কেজি', 'লিটার', 'পিস', 'বস্তা', 'বটি'],
+    required: true,
   },
-  farmer: {
+  photo: {
+    type: String,
+    required: true,
+  },
+  seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
-  created_at: {
-    type: Date,
-    default: Date.now
-  },
-  updated_at: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-module.exports = mongoose.model('Post', postSchema);
+  orders: [
+    {
+      customer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      deliveryAddress: {
+        type: String,
+        required: true,
+      },
+      status: {
+        type: String,
+        enum: ['অর্ডারকৃত', 'পেন্ডিং', 'ডেলিভারড'],
+        default: 'অর্ডারকৃত',
+        required: true,
+      },
+    },
+  ],
+}, { timestamps: true });
+const Post = mongoose.models.Post || mongoose.model('Post',postSchema);
+module.exports = Post;

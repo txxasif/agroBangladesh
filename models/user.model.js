@@ -24,6 +24,7 @@ export async function checkLogin(user){
   try{
     const response = await User.findOne({...user});
     if(response){
+      console.log(response);
       status = true;
       data = response;
     }else{
