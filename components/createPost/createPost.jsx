@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./createPost.module.css";
-import { currentUserIdSelector } from "@/store/reducers/user.selector";
+import { currentUserIdSelector, isPostCreatedSelector } from "@/store/reducers/user.selector";
 import { useDispatch, useSelector } from "react-redux";
-import { createPostAsync } from "@/store/reducers/user.reducer";
+import { createPostAsync, setPostChecker } from "@/store/reducers/user.reducer";
+import { useRouter } from "next/router";
+
 const initialValue = {
     title: '',
     description: '',
@@ -37,6 +39,7 @@ export default function CreatePost() {
          dispatch(createPostAsync(data))
          console.log(data);
       }
+   
   return (
     <form onSubmit={handleSubmit}  className={styles.postForm}>
       <div className={styles.postCard}>

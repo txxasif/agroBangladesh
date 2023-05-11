@@ -1,10 +1,24 @@
 import Profile from "@/components/profile/profile";
+import { setPostChecker } from "@/store/reducers/user.reducer";
+import { isPostCreatedSelector } from "@/store/reducers/user.selector";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 export default function ProfileIndex({userData}){
-    console.log(userData);
+    const check = useSelector(isPostCreatedSelector);
+    const router = useRouter();
+    const dispatch = useDispatch();
+    useEffect(()=>{
+      if(check){
+        console.log(router.asPath);
+        router.replace(router.asPath);
+        dispatch(setPostChecker());
+      }
+    })
     return(
         <div>
-            <Profile />
+            <Profile user = {userData} />
         </div>
     )
 }
@@ -16,7 +30,7 @@ export async function getServerSideProps(context){
     console.log(userId)
     const url = `${SERVER_URL}/api/post/${userId}`;
     const response = await axios.get(url);
-    console.log(response.data,'from server');
+    console.log(response.data.data,'from server');
     return {
         props: {
            userData: response.data.data

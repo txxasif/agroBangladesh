@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './post.module.css'; // Import Next.js styles
 
-const PostCard = ({ title, description, category, price, quantity, unit, photo, seller, createdAt }) => {
+const PostCard = ({ seller, post }) => {
+  const { title, description, category, price, quantity, unit, photo, createdAt} = post;
   return (
-    <div className={styles.post}>
+    <div key = { post._id} className={styles.post}>
       <div className={styles.header}>
         <div className={styles.user}>
           <img src={seller.photo} alt={seller.name} className={styles.userPhoto} />

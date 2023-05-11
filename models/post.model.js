@@ -12,7 +12,7 @@ export async function createPostModel(postData){
 }
 export async function getUserPostsModel(id){
     try{
-    const userPosts = await User.findById(id).select("name photo _id").populate({
+    const userPosts = await User.findById(id).select("name photo email _id").populate({
         path: "posts",
         options: {
             sort: { createdAt: -1}

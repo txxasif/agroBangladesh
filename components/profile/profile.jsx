@@ -2,14 +2,14 @@ import { currentUserSelector ,currentUserDataSelector} from "@/store/reducers/us
 import { useSelector } from "react-redux"
 import AboutSection from "../aboutSection/aboutSection";
 import CreatePost from "../createPost/createPost";
-export default function Profile(){
-    const user = useSelector(currentUserSelector);
+import Posts from "../userPosts/userPosts";
+export default function Profile({user}){
     const userData = useSelector(currentUserDataSelector);
     return(
         <div>
           <AboutSection user = {userData} />
           <CreatePost />
-          
+          <Posts user={user}/>
 
         </div>
     )

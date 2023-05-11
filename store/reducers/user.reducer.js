@@ -3,25 +3,30 @@ import {
   createUserHelper,
   loginUserHelper,
   uploadPhoto,
-  createPostHelper
+  createPostHelper,
 } from "@/helper/registration/registration.helper";
+const userData = {
+  _id: '',
+  name: '',
+  photo: ''
+}
 const initialState = {
   currentUser: false,
-  userData: null,
+  userData: userData,
   error: false,
   errorText: "",
   createPostStatus: false,
   postError: false,
-  postErrorMessage: ""
+  postErrorMessage: "",
 };
 
 export const createUserAsync = createAsyncThunk(
   "user/registration",
-  async (user,thunkAPI) => {
+  async (user, thunkAPI) => {
     try {
-      console.log(user,'ll')
+      console.log(user, "ll");
       const result = await uploadPhoto(user.photo);
-      console.log(result.data.secure_url,'reult');
+      console.log(result.data.secure_url, "reult");
       user["photo"] = result.data.secure_url;
       const response = await createUserHelper(user);
       if (response.status === 201 && result.statusText === "OK") {
@@ -51,7 +56,7 @@ export const loginUserAsync = createAsyncThunk(
       const response = await loginUserHelper(data);
 
       if (response.status === 201) {
-        console.log(response.data.user,'userData');
+        console.log(response.data.user, "userData");
         return response.data.user;
       } else {
         throw new Error(response.statusText);
@@ -67,25 +72,28 @@ export const loginUserAsync = createAsyncThunk(
     }
   }
 );
-export const createPostAsync =  createAsyncThunk("user/createPost",async (data,thunkAPI)=>{
-  try {
-    const result = await uploadPhoto(data.photo);
-    console.log(result.data.secure_url,'reult');
-    data["photo"] = result.data.secure_url;
-    const response = await createPostHelper(data);
-    if(response.status === 201) {
-      return true;
-    }else{
-      throw new Error(response.statusText)
-    }
-  }catch(err){
-    if (err.response && err.response.status === 404) {
-      return thunkAPI.rejectWithValue({
-        message: "Something went wrong",
-      });
+export const createPostAsync = createAsyncThunk(
+  "user/createPost",
+  async (data, thunkAPI) => {
+    try {
+      const result = await uploadPhoto(data.photo);
+      console.log(result.data.secure_url, "reult");
+      data["photo"] = result.data.secure_url;
+      const response = await createPostHelper(data);
+      if (response.status === 201) {
+        return true;
+      } else {
+        throw new Error(response.statusText);
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        return thunkAPI.rejectWithValue({
+          message: "Something went wrong",
+        });
+      }
     }
   }
-})
+);
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -93,8 +101,13 @@ export const userSlice = createSlice({
     setCurrentUser: (state, action) => {
       state.currentUser = false;
       state.userData = null;
-      state.errorText = "",
+      state.errorText = "", 
       state.error = false;
+    },
+    setPostChecker: (state, action) => {
+      state.createPostStatus = false,
+        state.postError = false,
+        state.postErrorMessage = "";
     },
   },
   extraReducers: (builder) => {
@@ -121,12 +134,13 @@ export const userSlice = createSlice({
       .addCase(loginUserAsync.rejected, (state, action) => {
         state.error = true;
         state.errorText = action.payload.message;
-      }).addCase(createPostAsync.fulfilled,(state, action) => {
-         state.createPostStatus = true;
-         state.postError = false;
+      })
+      .addCase(createPostAsync.fulfilled, (state, action) => {
+        state.createPostStatus = true;
+        state.postError = false;
         state.postErrorMessage = "";
-
-      }).addCase(createPostAsync.rejected, (state, action) => {
+      })
+      .addCase(createPostAsync.rejected, (state, action) => {
         console.log(action.error);
         state.postError = true;
         state.postErrorMessage = action.payload.message;
@@ -136,6 +150,6 @@ export const userSlice = createSlice({
       });
   },
 });
-export const { setCurrentUser } = userSlice.actions;
+export const { setCurrentUser,setPostChecker } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;
