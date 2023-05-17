@@ -31,7 +31,7 @@ export async function getServerSideProps(context){
     const url = `/api/post/${userId}`;
     const response = await axios.get(url);
     const { data,error} = useSWR(url,fetcher)
-    console.log(response.data.data,'from server');
+  //  console.log(response.data.data,'from server');
     return {
         props: {
            userData: data
