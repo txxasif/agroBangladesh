@@ -1,14 +1,17 @@
 import React from 'react';
 import styles from './post.module.css'; // Import Next.js styles
-
+import { currentUserSelector } from '@/store/reducers/user.selector';
+import { useSelector } from 'react-redux';
 const PostCard = ({ seller, post }) => {
   const deletePost = () => {
      
   }
   const { title, description, category, price, quantity, unit, photo, createdAt} = post;
   const date = new Date(createdAt).toLocaleString();
+  const isUser = useSelector(currentUserSelector);
   return (
-    <div key = { post._id} className={styles.post}>
+  <div>
+    { isUser && (  <div key = { post._id} className={styles.post}>
       <div className={styles.header}>
         <div className={styles.user}>
           <img src={seller.photo} alt={seller.name} className={styles.userPhoto} />
@@ -29,7 +32,8 @@ const PostCard = ({ seller, post }) => {
       <div>
         <button onClick={deletePost}> Delete Post </button>
       </div>
-    </div>
+    </div>)}
+  </div>
   );
 };
 
