@@ -1,9 +1,12 @@
 
+import PostCard from '@/components/postCard/postCard';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 
-export default function Home() {
-  const [msg,setMsg] = useState('')
+export default function Home({userPost}) {
+  const [msg,setMsg] = useState('');
+  console.log(userPost);
   const a =  async() => {
       let response = await fetch('/api/mongodb');
       let data = await response.json();
@@ -19,7 +22,28 @@ export default function Home() {
   },[])
   return (
     <h1>
-      {msg.message}
+    {
+      userPost.map((user)=>{
+        return(
+          <PostCard key={user._id} seller={user.sellerData} post={user} />
+        )
+      })
+    }
     </h1>
   )
+}
+export async function getServerSideProps(context){
+  const SERVER_URL = process.env.NODE_ENV === "production" ? "https://your-production-server.com" : "http://localhost:3000";
+  const response =  await axios.get(`${SERVER_URL}/api/post`);
+  const data = response.data.data;
+  data.map((user)=>{
+    console.log(user,'user');
+  })
+  
+ //                                                                                                                                                                                    console.log(data.data,'home');
+  return({
+    props: {
+      userPost: data
+    }
+  })
 }

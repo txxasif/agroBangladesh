@@ -18,7 +18,7 @@ export async function getUserPostsModel(id){
             sort: { createdAt: -1}
         }
     });
-    console.log(userPosts);
+   // console.log(userPosts,'xxx');
     return {status:true,data: userPosts};
     }catch(err){
         console.log(err);
@@ -41,5 +41,25 @@ export async function deletePost(userId, postId){
     }catch(err){
         console.log("sorry");
     }
+}
+export async function getPostsModel1(){
+    const result = await User.find().select('name photo -_id').populate({
+        path: 'posts',
+        select: '-orders -updatedAt',
+        options: {
+            sort: { createdAt: -1 }
+        }
+    })
+   return result;
+}
+export async function getPostsModel(){
+    const result = await Post.find().select('-updatedAt -orders');
+    const postPopulate = Promise.all(result.map(async(post)=>{
+        let data = await User.findById(post.seller).select('name photo -_id');
+        console.log(data,'frpm');
+        return { ...post.toObject(),sellerData: data}
+
+    }))
+   return postPopulate;
 }
     
