@@ -54,7 +54,7 @@ export async function getPostsModel1(){
 }
 export async function getPostsModel(){
     const result = await Post.find().select('-updatedAt -orders');
-    const postPopulate = Promise.all(result.map(async(post)=>{
+    const postPopulate =  await Promise.all(result.map(async(post)=>{
         let data = await User.findById(post.seller).select('name photo -_id');
         console.log(data,'frpm');
         return { ...post.toObject(),sellerData: data}
