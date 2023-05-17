@@ -23,7 +23,7 @@ export default function ProfileIndex({userData}){
 }
 
 export async function getServerSideProps(context){
-    const SERVER_URL = process.env.NODE_ENV === "production" ? "https://your-production-server.com" : "http://localhost:3000";
+    const SERVER_URL = process.env.NODE_ENV === "production" ? "https://agro-bangladesh-gpwodliow-txxasif.vercel.app/" : "http://localhost:3000/";
 
     const { userId } = context.params;
     console.log(userId)
