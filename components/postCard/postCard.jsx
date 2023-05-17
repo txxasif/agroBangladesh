@@ -11,7 +11,7 @@ const PostCard = ({ seller, post }) => {
   const isUser = useSelector(currentUserSelector);
   return (
   <div>
-    { isUser && (  <div key = { post._id} className={styles.post}>
+    { post._id && isUser ? (  <div key = { post._id} className={styles.post}>
       <div className={styles.header}>
         <div className={styles.user}>
           <img src={seller.photo} alt={seller.name} className={styles.userPhoto} />
@@ -32,7 +32,7 @@ const PostCard = ({ seller, post }) => {
       <div>
         <button onClick={deletePost}> Delete Post </button>
       </div>
-    </div>)}
+    </div>): (<h1>Hi</h1>)}
   </div>
   );
 };
