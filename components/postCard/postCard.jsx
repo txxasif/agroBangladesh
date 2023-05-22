@@ -1,39 +1,84 @@
 import React from 'react';
-import styles from './post.module.css'; // Import Next.js styles
-import { currentUserSelector } from '@/store/reducers/user.selector';
-import { useSelector } from 'react-redux';
+import styles from './post.module.css';
+import Image from 'next/image';
 const PostCard = ({ seller, post }) => {
-  console.log(seller);
   const deletePost = () => {
-     
-  }
-  const { title, description, category, price, quantity, unit, photo, createdAt} = post;
+    // Delete post functionality
+  };
+
+  const { title, description, category, price, quantity, unit, photo, createdAt } = post;
   const date = new Date(createdAt).toLocaleString();
-  //console.log(date,'card');
+  const loader = () => photo;
+  const loader2 = () => seller.photo;
+  
   return (
-   <div  className={styles.post}>
-      <div className={styles.header}>
-        <div className={styles.user}>
-          <img src={seller.photo} className={styles.userPhoto} />
-          <p className={styles.userName}>{seller.name}</p>
-        </div>
-        <p className={styles.createdAt}>{date}</p>
-      </div>
-      <div className={styles.details}>
-        <img src={photo} alt={title} className={styles.postPhoto} />
-        <div className={styles.postInfo}>
-          <h2 className={styles.title}>{title}</h2>
-          <p className={styles.description}>{description}</p>
-          <p className={styles.category}>Category: {category}</p>
-          <p className={styles.price}>Price: {price} BDT</p>
-          <p className={styles.quantity}>Quantity: {quantity} {unit}</p>
-        </div>
-      </div>
-      <div>
-        <button onClick={deletePost}> Delete Post </button>
-      </div>
-    </div>
+    <div class="card">
+                <div className={styles.topContainer}>
+                    <div class={styles.photoContainer}>
+                        <Image width='48' height='48' loader={loader2} className={styles.photo} src="./44.jpg" alt="" />
+                    </div>
+                    <div className={styles.infoContainer}>
+                        <h3>{seller?.name || 'Sabbir'}</h3>
+                        <p>{date}</p>
+                    </div>
+                </div>
+                <div className={styles.postPhoto}>
+                    <Image src={photo} width='230' height='230' loader={loader} alt="" className={styles.pPhoto}/>
+                </div>
+                <div className={styles.productDetailsContainer}>
+                    <p>Category: {category}</p>
+                    <p>Price : {price}$</p>
+                    <p>Unit: {unit}</p>
+                    <p>Available: {quantity}</p>
+
+                </div>
+                <div className= {styles.button}>
+                    Buy Now
+                </div>
+            </div>
+   
   );
 };
 
 export default PostCard;
+
+// (
+//   <div className={styles.productCard}>
+//   <div className={styles.badge}>{'soldOut'}</div>
+//   <div className={styles.productTumb}>
+//     <img src={photo} alt="" />
+//   </div>
+//   <div className={styles.productDetails}>
+//     <span className={styles.productCatagory}>{category}</span>
+//     <h4><a href="">{seller.name}</a></h4>
+//     <p>{description}</p>
+//     <div className={productBottomDetails}>
+//       <div className={styles.productPrice}>{price}</div>
+//       <div className = {styles.productLinks }>
+//         <a href=""><i class="fa fa-heart"></i></a>
+//         <a href=""><i class="fa fa-shopping-cart"></i></a>
+//       </div>
+//     </div>
+//   </div>
+// </div>
+// )
+{/* <div className={styles.productCard}>
+<div className={styles.badge}>{'soldOut'}</div>
+<div className={styles.productTumb}>
+  <img src={photo} alt="" />
+</div>
+<div className={styles.productDetails}>
+  <span className={styles.productCatagory}>{category}</span>
+  <h4><a href="">{seller.name}</a></h4>
+  <p>{description}</p>
+  <div className={styles.productBottomDetails}>
+    <div className={styles.productPrice}>{price}</div>
+    <div className = {styles.productLinks }>
+      <a href=""><i class="fa fa-heart"></i></a>
+      <a href=""><i class="fa fa-shopping-cart"></i></a>
+    </div>
+  </div>
+</div>
+</div>
+);
+}; */}

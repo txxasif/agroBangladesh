@@ -3,7 +3,7 @@ import SignUp from "@/components/signUp/signup";
 
 export default function Login(){
     return(
-        <div>
+        <div className="flex justify-center items-start h-screen">
            <LogIn />
            <SignUp />
 

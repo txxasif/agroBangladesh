@@ -5,9 +5,14 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useSWR from 'swr';
 export default function ProfileIndex({userData}){
+    const fetcher = async(url)=>await axios.get(url).then((res)=>res.data.data)
     const check = useSelector(isPostCreatedSelector);
     const router = useRouter();
+    const { userId } = router.query;
+    const { data,error } = useSWR(`/api/post/${userId}`,fetcher);
+    console.log(data,'cc');
     const dispatch = useDispatch();
     useEffect(()=>{
       if(check){
@@ -15,6 +20,9 @@ export default function ProfileIndex({userData}){
         dispatch(setPostChecker());
       }
     },[check])
+    if(!data){
+        return (<h1>loading</h1>)
+    }
     return(
         <div>
             <Profile user = {userData} />
